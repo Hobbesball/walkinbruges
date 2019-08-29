@@ -4,3 +4,7 @@
 [27-Aug-2019 20:26:07] NOTICE: exiting, bye-bye!
 [29-Aug-2019 11:50:11] NOTICE: fpm is running, pid 64
 [29-Aug-2019 11:50:11] NOTICE: ready to handle connections
+[29-Aug-2019 14:35:31] NOTICE: Terminating ...
+[29-Aug-2019 14:35:31] NOTICE: exiting, bye-bye!
+[29-Aug-2019 14:35:45] NOTICE: fpm is running, pid 56
+[29-Aug-2019 14:35:45] NOTICE: ready to handle connections
