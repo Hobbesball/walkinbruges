@@ -166,4 +166,7 @@ INSERT INTO `wp_options` VALUES
 (254,"_transient_timeout_dash_v2_88ae138922fe95674369b1cb3d215a2b","1567122661","no"),
 (255,"_transient_dash_v2_88ae138922fe95674369b1cb3d215a2b","<div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://wordpress.org/news/2019/08/people-of-wordpress-amanda-rush/\'>People of WordPress: Amanda Rush</a></li></ul></div><div class=\"rss-widget\"><ul><li><a class=\'rsswidget\' href=\'https://buddypress.org/2019/08/buddypress-5-0-0-beta1/\'>BuddyPress: BuddyPress 5.0.0-beta1</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/standardjs-pauses-experiment-with-ads-in-the-terminal-after-linode-pulls-sponsorship\'>WPTavern: StandardJS Pauses Experiment with Ads in the Terminal after Linode Pulls Sponsorship</a></li><li><a class=\'rsswidget\' href=\'https://wptavern.com/top-fifty-wp-new-website-ranks-plugins-by-downloads-per-day\'>WPTavern: Top Fifty WP: New Website Ranks Plugins by Downloads per Day</a></li></ul></div>","no"),
 (256,"_wp_session_7ab84fa16619c5f9b129eb5a77a0183c","a:0:{}","no"),
-(257,"_wp_session_expires_7ab84fa16619c5f9b129eb5a77a0183c","1567081288","no");
+(257,"_wp_session_expires_7ab84fa16619c5f9b129eb5a77a0183c","1567081288","no"),
+(258,"_transient_doing_cron","1567089349.3902010917663574218750","yes"),
+(259,"_wp_session_4ed44bf7e7ac2227d616963991a3972e","a:0:{}","no"),
+(260,"_wp_session_expires_4ed44bf7e7ac2227d616963991a3972e","1567091155","no");
