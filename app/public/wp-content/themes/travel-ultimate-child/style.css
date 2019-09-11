@@ -1,0 +1,29 @@
+/*
+Theme Name: Walk in Bruges
+Theme URL: https://themepalace.com/downloads/travel-ultimate
+Author: Jolan Wuyts
+Author URI: jolanwuyts.eu
+Description: This is a child theme of Theme Palace's Travel Ultimate, customised to fit a private tour guide in Bruges' website needs.
+Template: travel-ultimate
+Version: 1.0.0
+Text Domain: walkinbrugestheme
+*/ 
+
+
+/* this pushes the hero image under the navbar */
+
+.featured-slider-disabled #masthead {
+    position: absolute;
+    background-color: transparent;
+}
+
+/* styling the front page site title and tagline */ 
+
+#frontpagetitle {
+    color:white;
+}
+
+#frontpagetagline {
+    font-size: 2em;
+    color:white;
+}
