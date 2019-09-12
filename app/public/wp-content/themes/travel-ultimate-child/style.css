@@ -27,3 +27,73 @@ Text Domain: walkinbrugestheme
     font-size: 2em;
     color:white;
 }
+
+/* setting global font options */
+
+/* low level font */ 
+
+.body-font-1,
+.body-font-1 .wp-travel-trip-code code,
+.body-font-1 #faq h4, 
+.body-font-1 .global-faq-shortcode h4,
+.body-font-1 .checkout-page-wrap .checkout-block h3,
+.body-font-1 .checkout-block .panel-title,
+.body-font-1 .dashboard-tab .resp-tab-content h3,
+.body-font-1 .wp-travel-toolbar .wp-travel-post-filter .wp-travel-filter-by-heading h4 {
+    font-family: 'Raleway', sans-serif;
+}
+
+/* top level font */
+.header-font-5 h1,
+.header-font-5 h2,
+.header-font-5 h3,
+.header-font-5 h4,
+.header-font-5 h5,
+.header-font-5 h6,
+.header-font-5 .read-more a span,
+.header-font-5 .wp-travel-filter p label,
+.header-font-5 .travel-info .title {
+	font-family: 'Oswald', sans-serif;
+}
+
+/* page site header fonts */
+#page-site-header .page-title {
+	font-size: 52px;
+	color: #fff;
+    margin: 0;
+    line-height: 1;
+    font-family: 'Kaushan Script', sans-serif;
+}
+
+/* front page header font */
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Kaushan Script', serif;
+}
+
+/* section title font */
+.section-title {
+    font-family: 'Raleway', sans-serif;
+}
+
+/* entry title fonts */
+#call-to-action .entry-title {
+    font-family: 'Raleway', sans-serif;
+}
+
+/* CTA section styling */
+.cta-custom-wrapper {
+    display: block;
+    overflow: hidden;
+
+}
+.cta-text-left {
+    display: inline-block;
+    float: left;
+}
+
+.cta-text-right {
+    float:right ;
+    display: inline-block;
+    overflow: hidden;
+ }

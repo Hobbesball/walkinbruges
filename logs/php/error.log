@@ -9,3 +9,24 @@
 [11-Sep-2019 09:07:38 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
 [11-Sep-2019 09:29:56 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
 [11-Sep-2019 10:46:57 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 10:58:12 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 12:32:28 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 13:38:22 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 13:57:22 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 14:40:24 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 14:59:35 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[11-Sep-2019 15:21:25 UTC] PHP Parse error:  syntax error, unexpected 'endif' (T_ENDIF), expecting end of file in /app/public/wp-content/themes/travel-ultimate-child/functions.php on line 137
+[11-Sep-2019 15:22:03 UTC] PHP Parse error:  syntax error, unexpected 'endif' (T_ENDIF), expecting end of file in /app/public/wp-content/themes/travel-ultimate-child/functions.php on line 125
+[11-Sep-2019 15:22:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function get_custom_excerpt() in /app/public/wp-content/themes/travel-ultimate-child/functions.php:111
+Stack trace:
+#0 /app/public/wp-includes/class-wp-hook.php(286): travel_ultimate_get_cta_section_details(Array)
+#1 /app/public/wp-includes/plugin.php(208): WP_Hook->apply_filters(Array, Array)
+#2 /app/public/wp-content/themes/travel-ultimate/inc/sections/cta.php(27): apply_filters('travel_ultimate...', Array)
+#3 /app/public/wp-includes/class-wp-hook.php(286): travel_ultimate_add_cta_section('')
+#4 /app/public/wp-includes/class-wp-hook.php(310): WP_Hook->apply_filters(false, Array)
+#5 /app/public/wp-includes/plugin.php(465): WP_Hook->do_action(Array)
+#6 /app/public/wp-content/themes/travel-ultimate/header.php(91): do_action('travel_ultimate...')
+#7 /app/public/wp-includes/template.php(722): require_once('/app/public/wp-...')
+#8 /app/public/wp-includes/template.php(671): load_template('/app/public/wp-...', true)
+#9 /app/public/wp-includes/general-template.php(41): locate_templa in /app/public/wp-content/themes/travel-ultimate-child/functions.php on line 111
+[11-Sep-2019 15:25:01 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128

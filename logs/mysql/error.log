@@ -413,3 +413,13 @@ InnoDB: Progress in percent: 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 
 2019-09-11T09:29:50.495363Z 0 [Note] InnoDB: Buffer pool(s) load completed at 190911  9:29:50
 2019-09-11T09:29:50.510433Z 0 [Note] /usr/sbin/mysqld: ready for connections.
 Version: '5.7.23'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+2019-09-11T11:15:42.850373Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 982101ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T16:28:24.471921Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 130121ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T17:11:46.618275Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 129048ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T17:44:53.329778Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 128633ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T18:51:02.521969Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 131174ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T19:07:16.671853Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 65781ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T19:24:04.961599Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 66921ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T20:13:34.462463Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 195337ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T20:29:46.720577Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 64900ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
+2019-09-11T21:02:46.130364Z 0 [Note] InnoDB: page_cleaner: 1000ms intended loop took 130631ms. The settings might not be optimal. (flushed=0 and evicted=0, during the time.)
