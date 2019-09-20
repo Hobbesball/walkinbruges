@@ -30,3 +30,6 @@ Stack trace:
 #8 /app/public/wp-includes/template.php(671): load_template('/app/public/wp-...', true)
 #9 /app/public/wp-includes/general-template.php(41): locate_templa in /app/public/wp-content/themes/travel-ultimate-child/functions.php on line 111
 [11-Sep-2019 15:25:01 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[19-Sep-2019 05:35:13 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[20-Sep-2019 13:10:23 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[20-Sep-2019 13:26:33 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
