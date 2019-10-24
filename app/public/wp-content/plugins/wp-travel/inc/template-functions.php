@@ -1419,12 +1419,15 @@ function is_wp_travel_archive_page() {
  * @since 1.0.4
  * @return void
  */
+
+ // fucking with the plugin itself to fix the all trips page
 function wp_travel_archive_toolbar() {
 	$view_mode = wp_travel_get_archive_view_mode();
 	if ( ( is_wp_travel_archive_page() || is_search() ) && ! is_admin() ) :
 		?>
 		<?php if ( is_wp_travel_archive_page() ) : ?>
-	<div class="wp-travel-toolbar clearfix">
+	<!-- removing the filter bar -->	
+	<!--<div class="wp-travel-toolbar clearfix">
 		<div class="wp-toolbar-content wp-toolbar-left">
 			<?php wp_travel_archive_filter_by(); ?>
 		</div>
@@ -1437,7 +1440,7 @@ function wp_travel_archive_toolbar() {
 				<li class="wp-travel-view-mode <?php echo ( 'list' === $view_mode ) ? 'active-mode' : ''; ?>" data-mode="list" ><a href="<?php echo esc_url( add_query_arg( 'view_mode', 'list', $current_url ) ); ?>"><i class="dashicons dashicons-list-view"></i></a></li>
 			</ul>
 		</div>
-	</div>
+	</div> -->
 	<?php endif; ?>
 		<?php
 
@@ -1449,7 +1452,8 @@ function wp_travel_archive_toolbar() {
 
 		?>
 	<div class="wp-travel-archive-content <?php echo esc_attr( $archive_sidebar_class ); ?>">
-		<?php if ( 'grid' === $view_mode ) : ?>
+		<?php
+		 if ( 'grid' === $view_mode ) : ?>
 			<?php $col_per_row = apply_filters( 'wp_travel_archive_itineraries_col_per_row', '3' ); ?>
 			<?php
 			if ( is_active_sidebar( 'wp-travel-archive-sidebar' ) ) {

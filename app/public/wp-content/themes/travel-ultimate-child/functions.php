@@ -5,7 +5,8 @@
 - enable header image on front page
 - import google fonts
 - customizing CTA front page section
-
+- customizing tours front page section
+- customizing all trips page
 -->
 
 <?php
@@ -241,7 +242,7 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
 
                                     <?php 
                                     if ( 'trip' === $content_type && class_exists( 'WP_Travel' ) ) { 
-                                        $trip_price = wp_travel_get_trip_price( $content['id'] );
+                                         $trip_price = wp_travel_get_trip_price( $content['id'] );
                                         $settings        = wp_travel_get_settings();
                                         $currency_code   = ( isset( $settings['currency'] ) ) ? $settings['currency'] : '';
                                         $currency_symbol = wp_travel_get_currency_symbol( $currency_code );
@@ -264,3 +265,4 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
     </div><!-- packages -->
     
 <?php }
+

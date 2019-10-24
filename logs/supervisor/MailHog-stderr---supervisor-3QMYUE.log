@@ -1,0 +1,75 @@
+2019/10/24 14:11:50 Using in-memory storage
+2019/10/24 14:11:50 [SMTP] Binding to address: 0.0.0.0:1025
+2019/10/24 14:11:50 Serving under http://:1080/
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Starting session
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: INVALID] Started session, switching to ESTABLISH state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 35 bytes: '220 mailhog.example ESMTP MailHog\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 16 bytes: 'EHLO localhost\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: ESTABLISH] Processing line: EHLO localhost
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: ESTABLISH] In state 1, got command 'EHLO', args 'localhost'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: ESTABLISH] In ESTABLISH state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: ESTABLISH] Got EHLO command, switching to MAIL state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 21 bytes: '250-Hello localhost\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 16 bytes: '250-PIPELINING\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 16 bytes: '250 AUTH PLAIN\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 35 bytes: 'MAIL FROM:<www-data@3b803214ef87>\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] Processing line: MAIL FROM:<www-data@3b803214ef87>
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] In state 6, got command 'MAIL', args 'FROM:<www-data@3b803214ef87>'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] In MAIL state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] Got MAIL command, switching to RCPT state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 37 bytes: '250 Sender www-data@3b803214ef87 ok\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 34 bytes: 'RCPT TO:<mailhog@flywheel.local>\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] Processing line: RCPT TO:<mailhog@flywheel.local>
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] In state 7, got command 'RCPT', args 'TO:<mailhog@flywheel.local>'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] In RCPT state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] Got RCPT command
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 41 bytes: '250 Recipient mailhog@flywheel.local ok\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 6 bytes: 'DATA\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] Processing line: DATA
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] In state 7, got command 'DATA', args ''
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] In RCPT state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: RCPT] Got DATA command, switching to DATA state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 37 bytes: '354 End data with <CR><LF>.<CR><LF>\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 1024 bytes: 'To: jolanwuyts@gmail.com\r\nSubject: [Walk in Bruges] Your Site is Experiencing a Technical Issue\r\nX-PHP-Originating-Script: 1000:class-phpmailer.php\r\nDate: Thu, 24 Oct 2019 14:54:00 +0000\r\nFrom: Walk in Bruges <wordpress@walk-in-bruges.local>\r\nMessage-ID: <a1f4e971c80789eb05c8616c8fd343c2@walk-in-bruges.local>\r\nX-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nHowdy!\r\n\r\nSince WordPress 5.2 there is a built-in feature that detects when a plugin or theme causes a fatal error on your site, and notifies you with this automated email.\r\n\r\nIn this case, WordPress caught an error with your theme, Walk in Bruges.\r\n\r\nFirst, visit your website (http://walk-in-bruges.local/) and check for any visible issues. Next, visit the page where the error was caught (http://walk-in-bruges.local/wp-admin/admin-ajax.php) and check for any visible issues.\r\n\r\nPlease contact your host for assistance with investigating this issue further.\r\n\r\nIf your site appe'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 808 bytes: 'ars broken and you can't access your dashboard normally, WordPress now has a special "recovery mode". This lets you safely login to your dashboard and investigate further.\r\n\r\nhttp://walk-in-bruges.local/wp-login.php?action=enter_recovery_mode&rm_token=5jtG6JbpNtNplBqNyxJt75&rm_key=vA6E9J12IVZ26HaGK37bWA\r\n\r\nTo keep your site safe, this link will expire in 1 day. Don't worry about that, though: a new link will be emailed to you if the error occurs again after it expires.\r\n\r\n\r\n\r\nError Details\r\n=============\r\nAn error of type E_ERROR was caused in line 328 of the file /app/public/wp-content/themes/travel-ultimate-child/functions.php. Error message: Cannot redeclare wp_travel_archive_wrapper_close() (previously declared in /app/public/wp-content/plugins/wp-travel/inc/template-functions.php:1473)\r\n\r\n.\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: DATA] Got EOF, storing message and switching to MAIL state
+2019/10/24 14:54:00 Parsing Content from string: 'To: jolanwuyts@gmail.com
+Subject: [Walk in Bruges] Your Site is Experiencing a Technical Issue
+X-PHP-Originating-Script: 1000:class-phpmailer.php
+Date: Thu, 24 Oct 2019 14:54:00 +0000
+From: Walk in Bruges <wordpress@walk-in-bruges.local>
+Message-ID: <a1f4e971c80789eb05c8616c8fd343c2@walk-in-bruges.local>
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Howdy!
+
+Since WordPress 5.2 there is a built-in feature that detects when a plugin or theme causes a fatal error on your site, and notifies you with this automated email.
+
+In this case, WordPress caught an error with your theme, Walk in Bruges.
+
+First, visit your website (http://walk-in-bruges.local/) and check for any visible issues. Next, visit the page where the error was caught (http://walk-in-bruges.local/wp-admin/admin-ajax.php) and check for any visible issues.
+
+Please contact your host for assistance with investigating this issue further.
+
+If your site appears broken and you can't access your dashboard normally, WordPress now has a special "recovery mode". This lets you safely login to your dashboard and investigate further.
+
+http://walk-in-bruges.local/wp-login.php?action=enter_recovery_mode&rm_token=5jtG6JbpNtNplBqNyxJt75&rm_key=vA6E9J12IVZ26HaGK37bWA
+
+To keep your site safe, this link will expire in 1 day. Don't worry about that, though: a new link will be emailed to you if the error occurs again after it expires.
+
+
+
+Error Details
+=============
+An error of type E_ERROR was caused in line 328 of the file /app/public/wp-content/themes/travel-ultimate-child/functions.php. Error message: Cannot redeclare wp_travel_archive_wrapper_close() (previously declared in /app/public/wp-content/plugins/wp-travel/inc/template-functions.php:1473)
+'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Storing message VahETs6DDFyQ1q4r3UYoGzPmClVi6SAhwSS7YSmWlzg=@mailhog.example
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 80 bytes: '250 Ok: queued as VahETs6DDFyQ1q4r3UYoGzPmClVi6SAhwSS7YSmWlzg=@mailhog.example\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Received 6 bytes: 'QUIT\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] Processing line: QUIT
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] In state 6, got command 'QUIT', args ''
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] [PROTO: MAIL] Got QUIT verb, staying in MAIL state
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Sent 9 bytes: '221 Bye\r\n'
+2019/10/24 14:54:00 [SMTP 127.0.0.1:58530] Session ended
