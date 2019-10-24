@@ -164,3 +164,103 @@ function travel_ultimate_render_cta_section( $content_details = array() ) {
         </div><!-- .wrapper -->
     </div><!-- .hero-cta-wrapper -->
 <?php }
+
+// package section front page details
+function travel_ultimate_render_package_section( $content_details = array() ) {
+    $options = travel_ultimate_get_theme_options();
+    $content_type = $options['package_content_type'];
+    $i = 1;        
+
+    if ( empty( $content_details ) ) {
+        return;
+    } ?>
+
+    <div id="recommended-packages" class="relative page-section">
+        <div class="wrapper">
+            <div class="section-header align-center">
+                <?php if ( ! empty( $options['package_sub_title'] ) ) : ?>
+                    <span class="section-subtitle"><?php echo esc_html( $options['package_sub_title'] ); ?></span>
+                <?php endif; ?>
+
+                <?php if ( ! empty( $options['package_title'] ) ) : ?>
+                    <h2 class="section-title"><?php echo esc_html( $options['package_title'] ); ?></h2>
+                <?php endif; ?>
+            </div><!-- .section-header -->
+
+            <div class="section-content clear col-3">
+                <?php 
+                $i = 1;
+                foreach ( $content_details as $content ) : ?>
+                    <article class="has-post-thumbnail">
+                        <div class="package-wrapper">
+                            <div class="featured-image" style="background-image: url('<?php echo esc_url( $content['img'] ); ?>');">
+                                <?php if ( 'trip' === $content_type && class_exists( 'WP_Travel' ) ) { ?>
+                                    <div class="clearfix">
+                                        <?php wp_travel_single_trip_rating( $content['id'] );  ?>
+                                    </div><!-- .clearfix -->
+                                <?php } ?>
+                            </div><!-- .featured-image -->
+
+                            <div class="entry-container">
+                                <span class="location">
+                                    <?php 
+                                    if ( 'trip' === $content_type ) { 
+                                        $terms = get_the_terms( $content['id'], 'travel_locations' );
+                                        if ( is_array( $terms ) && count( $terms ) > 0 ) {
+                                            foreach ( $terms as $term ) {
+                                            ?>
+                                            <a href="<?php echo esc_url( get_term_link( $term->term_id ) ) ?>"><?php echo esc_html( $term->name ); ?></a>
+                                            <?php 
+                                            }
+                                        } 
+                                    } elseif ( 'page' != $content_type ) {
+                                        $cats = get_the_category( $content['id'] );
+                                        foreach ( $cats as $cat ) { 
+                                            ?>
+                                            <a href="<?php echo esc_url( get_category_link( $cat->term_id ) ); ?>"><?php echo esc_html( get_cat_name( $cat->term_id ) ); ?></a>
+                                    <?php 
+                                        } 
+                                    }
+                                    ?>
+                                </span>
+
+                                <h4 class="post-title"><a href="<?php echo esc_url( $content['url'] ); ?>"><?php echo esc_html( $content['title'] ); ?></a></h4>
+<!-- comment out duration of walk and price of walk metas -->
+                                <div class="trip-metas clear">
+                                    <div class="wp-travel-trip-time trip-fixed-departure">
+                                        <?php
+                                        if ( 'trip' === $content_type && class_exists( 'WP_Travel' ) ) {
+                                            // commented out trip duration here so it doesn't show
+                                            //wp_travel_get_trip_duration( $content['id'] );
+                                        } else {
+                                            //echo '<i class="fa fa-calendar"></i>';
+                                           // echo esc_html( get_the_date( get_option( 'date_format' ), $content['id'] ) );
+                                         }
+                                        ?>
+                                    </div>
+
+                                    <?php 
+                                    if ( 'trip' === $content_type && class_exists( 'WP_Travel' ) ) { 
+                                        $trip_price = wp_travel_get_trip_price( $content['id'] );
+                                        $settings        = wp_travel_get_settings();
+                                        $currency_code   = ( isset( $settings['currency'] ) ) ? $settings['currency'] : '';
+                                        $currency_symbol = wp_travel_get_currency_symbol( $currency_code );
+                                        ?>
+                                        <div class="price-meta">
+                                            <!-- removed php classes here so no trip price is shown -->
+                                            <span><span class="trip-price"></span></span>
+                                            <!-- .trip-price -->
+                                        </div> 
+                                        <!-- .price-meta -->
+                                    <?php } ?>
+                                </div><!-- .trip-metas -->
+                            </div><!-- .entry-container -->
+                        </div><!-- .package-wrapper -->
+                    </article>
+                <?php $i++; 
+                endforeach; ?>
+            </div><!-- .packages-content -->   
+        </div><!-- wrapper -->
+    </div><!-- packages -->
+    
+<?php }
