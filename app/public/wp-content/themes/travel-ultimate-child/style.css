@@ -112,9 +112,9 @@ div #call-to-action, #recommended-packages {
 
  /* general page section padding */
 
- @media screen and (max-width: 992px)
-.page-section {
+ @media screen and (max-width: 992px) {.page-section {
     padding: 25px 0;
+} 
 }
 
 div #about-us {
