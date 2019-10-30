@@ -10,6 +10,19 @@ Text Domain: walkinbrugestheme
 */ 
 
 
+/* make hero image cover the container and not repeat */
+#page-site-header {
+    background-size: cover; 
+    background-repeat: no-repeat;
+
+}
+
+/* make the trip page description and info tab fit the page better */ 
+.wp-travel.trip-headline-wrapper .featured-detail-section.right-plot, .wp-travel.tab-list.resp-tabs-list, .wp-travel-tab-wrapper .tab-list.resp-tabs-list:after {
+width:100%;
+max-width: 100%;
+}
+
 /* this pushes the hero image under the navbar */
 
 .featured-slider-disabled #masthead {
@@ -275,3 +288,4 @@ a,
 ul.availabily-list .availabily-content .btn {
     border-color: #cb6852;
 }
+

@@ -7,6 +7,9 @@
 - customizing CTA front page section
 - customizing tours front page section
 - customizing all trips page
+- strip archives from archives page title
+- front page about me section
+- testimonial section 
 -->
 
 <?php
@@ -266,3 +269,123 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
     
 <?php }
 
+// strip the text Archives:... from the page title for itineraries by changing a filter in the get_the_archive_title function 
+
+// Simply remove anything that looks like an archive title prefix ("Archive:", "Foo:", "Bar:").
+add_filter('get_the_archive_title', function ($title) {
+    return preg_replace('/^\w+: /', '', $title);
+});
+
+
+// about me section on front page
+
+function travel_ultimate_render_about_section( $content_details = array(), $tour_details = array() ) {
+    $options = travel_ultimate_get_theme_options();
+
+    if ( empty( $content_details ) && empty( $tour_details ) ) {
+        return;
+    } 
+    ?>
+    
+   <div id="about-us" class="relative page-section" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/uploads/gray-pattern.png'; ?>);">
+
+        <?php if ( ! empty( $content_details ) ) { ?>
+            <div class="wrapper">
+                <?php foreach ( $content_details as $content ) : ?>
+                    <div class="header-content-wrapper clear">
+                        <div class="section-header">
+                            <?php if ( ! empty( $content['title'] ) ) : ?>
+                                <h2 class="section-title"><?php echo esc_html( $content['title'] ); ?></h2>
+                            <?php endif; ?>
+                        </div><!-- .section-header -->
+
+                        <?php if ( ! empty( $content['excerpt'] ) ) : ?>
+                            <div class="section-content">
+                                <p><?php echo wp_kses_post( $content['excerpt'] ); ?></p>
+                            </div><!-- .section-content -->
+                        <?php endif; ?>
+                    </div><!-- .header-content-wrapper -->
+                <?php endforeach; ?>
+            </div><!-- .wrapper -->
+        <?php }; ?>
+
+        <?php if ( ! empty( $tour_details ) ) { ?>
+            <!-- use classes "classic-slider and modern-slider" -->
+            <div class="tours-slider classic-slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 1, "infinite": true, "speed": 1000, "dots": false, "arrows":true, "autoplay": false, "draggable": true, "fade": false }'>
+                <?php 
+                $i = 1;
+                foreach ( $tour_details as $tour ) : 
+                    $img = ( ! empty( $options['tour_image_' . $i ] ) ) ? $options['tour_image_' . $i ] : '';
+                    ?>
+                    <article>
+                        <div class="tour-item-wrapper" style="background-image: url('<?php echo esc_url( $img ); ?>');">
+                            <header class="entry-header">
+                                <h2 class="entry-title">
+                                    <?php if ( ! empty( $tour['name'] ) ) { ?>
+                                        <a href="<?php echo esc_url( $tour['url'] ); ?>">
+                                            <?php echo esc_html( $tour['name'] ); ?>
+                                        </a>
+                                    <?php } ?>
+                                </h2>
+                                <?php if ( ! empty( $tour['count'] ) ) { ?>
+                                    <span><?php echo absint( $tour['count'] ) . esc_html__( ' Trips', 'travel-ultimate' ); ?></span>
+                                <?php } ?>
+                            </header>
+                        </div><!-- .tour-item-wrapper -->
+                    </article>
+                <?php 
+                $i++;
+                endforeach; ?>
+            </div><!-- .tours-slider -->
+        <?php } ?>
+    </div><!-- #skills -->
+
+<?php
+}
+
+
+//front page testimonial section
+
+function travel_ultimate_render_testimonial_section( $content_details = array() ) {
+    $options = travel_ultimate_get_theme_options();
+    if ( empty( $content_details ) ) {
+        return;
+    } ?>
+
+    <div id="client-testimonial" class="relative page-section" style="background-image: url(<?php echo get_template_directory_uri() . '/assets/uploads/gray-pattern.png'; ?> );">
+            <div class="wrapper">
+                <div class="section-header">
+                    <?php if ( ! empty( $options['testimonial_title'] ) ) : ?>
+                        <h2 class="section-title"><?php echo esc_html( $options['testimonial_title'] ); ?></h2>
+                    <?php endif; ?>
+                </div><!-- .section-header -->
+
+                <!-- supports col-1, col-2, col-3 -->
+                <div class="section-content clear col-3">
+                    <?php foreach ( $content_details as $content ) : ?>
+                        <article>
+                            <div class="image-title-wrapper clear">
+                                <?php if ( ! empty( $content['image'] ) ) : ?>
+                                    <img src="<?php echo esc_url( $content['image'] ); ?>">
+                                <?php endif; ?>
+
+                                <header class="entry-header">
+                                    <?php if ( ! empty( $content['title'] ) ) : ?>
+                                        <h2 class="entry-title"><a href="<?php echo esc_url( $content['url'] ); ?>"><?php echo esc_html( $content['title'] ); ?></a></h2>
+                                    <?php endif; ?>
+                                </header>
+                            </div><!-- .image-title-wrapper -->
+                            
+
+                            <?php if ( ! empty( $content['excerpt'] ) ) : ?>
+                                <div class="entry-content">
+                                    <p><?php echo wp_kses_post( $content['excerpt'] ); ?></p>
+                                </div><!-- .entry-content -->
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            </div><!-- .wrapper -->
+        </div><!-- #clients-section -->
+
+<?php }
