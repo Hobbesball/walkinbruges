@@ -1,25 +1,28 @@
-<!-- TOC
-
-- load stylesheets
-- change section order on front page
-- enable header image on front page
-- import google fonts
-- customizing CTA front page section
-- customizing tours front page section
-- customizing all trips page
-- strip archives from archives page title
-- front page about me section
-- testimonial section 
--->
 
 <?php
-add_action( 'wp_enqueue_scripts', 'enqueue_parent_styles' );
+/** TOC
+*
+*- load stylesheets
+*- change section order on front page
+*- enable header image on front page
+*- import google fonts
+*- customizing CTA front page section
+*- customizing tours front page section
+*- customizing all trips page
+*- strip archives from archives page title
+*- front page about me section
+*- testimonial section 
+**/
+?>
 
-function enqueue_parent_styles() {
-    wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
- }
+<?php
+       add_action( 'wp_enqueue_scripts', 'enqueue_parent_theme_style' );
+       function enqueue_parent_theme_style() {
+             wp_enqueue_style( 'parent-style',    get_template_directory_uri().'/style.css' );
+       }   
+     ?>
 
-
+<?php
  // changing the order of sections on the front page. function originally in /inc/options.php
 
 function travel_ultimate_sortable_sections() {
@@ -35,7 +38,11 @@ function travel_ultimate_sortable_sections() {
     );
     return apply_filters( 'travel_ultimate_sortable_sections', $sections );
 }
+?>
 
+
+
+<?php
 // enabling the header image on the frontpage 
 
 function travel_ultimate_header_image() {
@@ -83,8 +90,9 @@ function travel_ultimate_header_image() {
     <?php
     endif;
 }
+?>
 
-
+<?php
 //enable google fonts
 
 function add_google_fonts() {
@@ -126,7 +134,9 @@ function travel_ultimate_get_cta_section_details( $input ) {
     }
     return $input;
 }
+?>
 
+<?php
 // cta section content details.
 add_filter( 'travel_ultimate_filter_cta_section_details', 'travel_ultimate_get_cta_section_details' );
 
@@ -168,7 +178,9 @@ function travel_ultimate_render_cta_section( $content_details = array() ) {
         </div><!-- .wrapper -->
     </div><!-- .hero-cta-wrapper -->
 <?php }
+?>
 
+<?php
 // package section front page details
 function travel_ultimate_render_package_section( $content_details = array() ) {
     $options = travel_ultimate_get_theme_options();
@@ -267,8 +279,9 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
         </div><!-- wrapper -->
     </div><!-- packages -->
     
-<?php }
+<?php } ?>
 
+<?php
 // strip the text Archives:... from the page title for itineraries by changing a filter in the get_the_archive_title function 
 
 // Simply remove anything that looks like an archive title prefix ("Archive:", "Foo:", "Bar:").
@@ -276,7 +289,9 @@ add_filter('get_the_archive_title', function ($title) {
     return preg_replace('/^\w+: /', '', $title);
 });
 
+?>
 
+<?php
 // about me section on front page
 
 function travel_ultimate_render_about_section( $content_details = array(), $tour_details = array() ) {
@@ -301,7 +316,7 @@ function travel_ultimate_render_about_section( $content_details = array(), $tour
 
                         <?php if ( ! empty( $content['excerpt'] ) ) : ?>
                             <div class="section-content">
-                                <p><?php echo wp_kses_post( $content['excerpt'] ); ?></p>
+                                <p><?php echo wp_kses_post( $content['excerpt'] ); ?> <a href="/about/">Read More.</a></p>
                             </div><!-- .section-content -->
                         <?php endif; ?>
                     </div><!-- .header-content-wrapper -->
@@ -341,9 +356,10 @@ function travel_ultimate_render_about_section( $content_details = array(), $tour
     </div><!-- #skills -->
 
 <?php
-}
+} ?>
 
 
+<?php
 //front page testimonial section
 
 function travel_ultimate_render_testimonial_section( $content_details = array() ) {
@@ -362,17 +378,18 @@ function travel_ultimate_render_testimonial_section( $content_details = array() 
 
                 <!-- supports col-1, col-2, col-3 -->
                 <div class="section-content clear col-3">
-                    <?php foreach ( $content_details as $content ) : ?>
+                    <!--?php foreach ( $content_details as $content ) : ?> -->
                         <article>
                             <div class="image-title-wrapper clear">
-                                <?php if ( ! empty( $content['image'] ) ) : ?>
-                                    <img src="<?php echo esc_url( $content['image'] ); ?>">
-                                <?php endif; ?>
-
+                                <!-- ?php if ( ! empty( $content['image'] ) ) : ?> 
+                                    <img src="?php echo esc_url( $content['image'] ); ?>">
+                                ?php endif; ?> -->
+                                <!-- add font awesome style --> 
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                                 <header class="entry-header">
-                                    <?php if ( ! empty( $content['title'] ) ) : ?>
-                                        <h2 class="entry-title"><a href="<?php echo esc_url( $content['url'] ); ?>"><?php echo esc_html( $content['title'] ); ?></a></h2>
-                                    <?php endif; ?>
+                                    <!-- ?php if ( ! empty( $content['title'] ) ) : ?> -->
+                                        <h2 class="entry-title"><!--<a href="?php echo esc_url( $content['url'] ); ?>">?php echo esc_html( $content['title'] ); ?></a>--><a href="https://www.google.com" class="fa fa-facebook"></a></h2>
+                                    <!-- ?php endif; ?> -->
                                 </header>
                             </div><!-- .image-title-wrapper -->
                             
@@ -383,9 +400,51 @@ function travel_ultimate_render_testimonial_section( $content_details = array() 
                                 </div><!-- .entry-content -->
                             <?php endif; ?>
                         </article>
-                    <?php endforeach; ?>
+                        <article>
+                            <div class="image-title-wrapper clear">
+                                <!-- ?php if ( ! empty( $content['image'] ) ) : ?> 
+                                    <img src="?php echo esc_url( $content['image'] ); ?>">
+                                ?php endif; ?> -->
+                                <!-- add font awesome style --> 
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                                <header class="entry-header">
+                                    <!-- ?php if ( ! empty( $content['title'] ) ) : ?> -->
+                                        <h2 class="entry-title"><!--<a href="?php echo esc_url( $content['url'] ); ?>">?php echo esc_html( $content['title'] ); ?></a>--><a href="https://www.tripadvisor.be/Attraction_Review-g188671-d17610599-Reviews-Walk_in_Bruges-Bruges_West_Flanders_Province.html" class="fa fa-tripadvisor"></a></h2>
+                                    <!-- ?php endif; ?> -->
+                                </header>
+                            </div><!-- .image-title-wrapper -->
+                            
+
+                            <?php if ( ! empty( $content['excerpt'] ) ) : ?>
+                                <div class="entry-content">
+                                    <p><?php echo wp_kses_post( $content['excerpt'] ); ?></p>
+                                </div><!-- .entry-content -->
+                            <?php endif; ?>
+                        </article>
+                        <article>
+                            <div class="image-title-wrapper clear">
+                                <!-- ?php if ( ! empty( $content['image'] ) ) : ?> 
+                                    <img src="?php echo esc_url( $content['image'] ); ?>">
+                                ?php endif; ?> -->
+                                <!-- add font awesome style --> 
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                                <header class="entry-header">
+                                    <!-- ?php if ( ! empty( $content['title'] ) ) : ?> -->
+                                        <h2 class="entry-title"><!--<a href="?php echo esc_url( $content['url'] ); ?>">?php echo esc_html( $content['title'] ); ?></a>--><a href="https://www.instagram.com/walkinbruges/" class="fa fa-instagram"></a></h2>
+                                    <!-- ?php endif; ?> -->
+                                </header>
+                            </div><!-- .image-title-wrapper -->
+                            
+
+                            <?php if ( ! empty( $content['excerpt'] ) ) : ?>
+                                <div class="entry-content">
+                                    <p><?php echo wp_kses_post( $content['excerpt'] ); ?></p>
+                                </div><!-- .entry-content -->
+                            <?php endif; ?>
+                        </article>
+                    <!-- ?php endforeach; ?> -->
                 </div>
             </div><!-- .wrapper -->
         </div><!-- #clients-section -->
 
-<?php }
+<?php } ?>

@@ -9,18 +9,24 @@ Version: 1.0.0
 Text Domain: walkinbrugestheme
 */ 
 
+/* TOC:
+1. hero image styling
+2. trip page styling
+3. front page site title and tagline
+4. fonts
+5. CTA section styling
+6. padding
+7. Color scheme
+8. social media section
 
-/* make hero image cover the container and not repeat */
+
+/* ==1==
+
+make hero image cover the container and not repeat */
 #page-site-header {
     background-size: cover; 
     background-repeat: no-repeat;
 
-}
-
-/* make the trip page description and info tab fit the page better */ 
-.wp-travel.trip-headline-wrapper .featured-detail-section.right-plot, .wp-travel.tab-list.resp-tabs-list, .wp-travel-tab-wrapper .tab-list.resp-tabs-list:after {
-width:100%;
-max-width: 100%;
 }
 
 /* this pushes the hero image under the navbar */
@@ -30,7 +36,28 @@ max-width: 100%;
     background-color: transparent;
 }
 
-/* styling the front page site title and tagline */ 
+/* hero image height */
+
+#page-site-header {
+    padding: 250px 0;
+ }
+
+
+/* 
+
+==2==
+
+make the trip page description and info tab fit the page better */ 
+.wp-travel.trip-headline-wrapper .featured-detail-section.right-plot, .wp-travel.tab-list.resp-tabs-list, .wp-travel-tab-wrapper .tab-list.resp-tabs-list:after {
+width:100%;
+max-width: 100%;
+}
+
+/* 
+
+==3==
+
+styling the front page site title and tagline */ 
 
 #frontpagetitle {
     color:white;
@@ -41,7 +68,11 @@ max-width: 100%;
     color:white;
 }
 
-/* setting global font options */
+/* 
+
+==4==
+
+setting global font options */
 
 /* low level font */ 
 
@@ -94,7 +125,11 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Raleway', sans-serif;
 }
 
-/* less padding on CTA front page section */
+/* 
+
+==5==
+
+less padding on CTA front page section */
 
 div #call-to-action, #recommended-packages {
     padding:25px 0;
@@ -117,13 +152,11 @@ div #call-to-action, #recommended-packages {
     padding-left: 15px;
  }
 
-/* hero image height */
-
- #page-site-header {
-    padding: 250px 0;
- }
-
- /* general page section padding */
+ /* 
+ 
+ ==6==
+ 
+ general page section padding */
 
  @media screen and (max-width: 992px) {.page-section {
     padding: 25px 0;
@@ -134,7 +167,11 @@ div #about-us {
     padding-bottom: 0;
 }
 
-/* changing color scheme of buttons and stuff from blue to brick red */
+/* 
+
+==7==
+
+changing color scheme of buttons and stuff from blue to brick red */
 
 /* color and border color */
 #wp-travel-send-enquiries,
@@ -289,3 +326,14 @@ ul.availabily-list .availabily-content .btn {
     border-color: #cb6852;
 }
 
+
+/* 
+
+==8==
+
+styling social media section */ 
+
+#client-testimonial .entry-header {
+    display: block;
+    text-align: center;
+}
