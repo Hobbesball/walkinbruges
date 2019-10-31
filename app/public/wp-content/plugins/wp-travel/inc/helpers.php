@@ -88,6 +88,7 @@ function wp_travel_settings_default_fields() {
 		// Trip Settings Fields.
 		'hide_related_itinerary'                  => 'no',
 		'enable_multiple_travellers'              => 'no',
+		'enable_multiple_category_on_pricing'     => 'yes', // This settings isn't visible for new user. So, it is always on for new settings. it means only new category layout will show in the admin and frontend.
 		'trip_pricing_options_layout'             => 'by-pricing-option',
 
 		// Email Settings Fields.
@@ -713,6 +714,10 @@ function wp_travel_get_payment_status() {
 			'color' => '#FF9800',
 			'text'  => __( 'Pending', 'wp-travel' ),
 		),
+		'partially_paid'   => array(
+			'color' => '#FF9800',
+			'text'  => __( 'Partially Paid', 'wp-travel' ),
+		),
 		'paid'             => array(
 			'color' => '#008600',
 			'text'  => __( 'Paid', 'wp-travel' ),
@@ -732,6 +737,10 @@ function wp_travel_get_payment_status() {
 		'N/A'              => array(
 			'color' => '#892E2C',
 			'text'  => __( 'N/A', 'wp-travel' ),
+		),
+		'refund'    => array(
+			'color' => '#892E2C',
+			'text'  => __( 'Refund', 'wp-travel' ),
 		),
 	);
 
@@ -1366,6 +1375,22 @@ function wp_travel_get_pricing_variation_options() {
 }
 
 /**
+ * @since 3.0.7
+ */
+function wp_travel_get_pricing_category_by_key( $key = null ) {
+	if ( ! $key ) {
+		return;
+	}
+
+	$variation = wp_travel_get_pricing_variation_options();
+
+	if ( array_key_exists( $key, $variation ) ) {
+		return $variation[ $key ];
+	}
+	return;
+}
+
+/**
  * Get single pricing variation by key.
  *
  * @return array $pricing Pricing variations data.
@@ -1373,15 +1398,13 @@ function wp_travel_get_pricing_variation_options() {
 function wp_travel_get_pricing_variation( $post_id, $pricing_key ) {
 
 	if ( '' === $post_id || '' === $pricing_key ) {
-
 		return false;
-
 	}
 
 	// Get Pricing variations.
 	$pricing_variations = get_post_meta( $post_id, 'wp_travel_pricing_options', true );
 
-	if ( is_array( $pricing_variations ) && '' !== $pricing_variations ) {
+	if ( is_array( $pricing_variations ) ) {
 
 		$result = array_filter(
 			$pricing_variations,
@@ -2124,11 +2147,11 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 											<a href="<?php echo esc_url( get_the_permalink( $trip_id ) ); ?>" target="_blank"><?php echo esc_attr( $pricing_name ); ?></a>,
 											<?php
 										endforeach;
-									else :
-										$pricing_name = wp_travel_get_trip_pricing_name( $trip_id );
-										?>
+										else :
+											$pricing_name = wp_travel_get_trip_pricing_name( $trip_id );
+											?>
 										<a href="<?php echo esc_url( get_the_permalink( $trip_id ) ); ?>" target="_blank"><?php echo esc_attr( $pricing_name ); ?></a>
-									<?php endif; ?>
+										<?php endif; ?>
 								</span>
 							</div>
 							<div class="my-order-single-field clearfix">
@@ -2136,8 +2159,20 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 								<span class="my-order-tail"><?php echo $travel_date; ?></span>
 							</div>
 
-							<!-- Hook to add booking time details at booking-->
-							<?php do_action( 'wp_travel_booked_times_details', $order_details ); ?>
+							<?php
+							/**
+							 * Hook to add booking time details at booking.
+							 * Will be deprecated in future, use wp_travel_after_bookings_travel_date instead.
+							 * @todo Must deprecate this hook letter.
+							 */
+							do_action( 'wp_travel_booked_times_details', $order_details );
+
+							/**
+							 * @since 3.0.4
+							 */
+							do_action( 'wp_travel_after_bookings_travel_date', $order_details );
+
+							?>
 						</div>
 						<div class="col-md-6">
 							<?php
@@ -2223,8 +2258,8 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 								<?php
 							endif;
 						endforeach;
-					else :
-						?>
+						else :
+							?>
 						<div class="my-order-single-traveller-info">
 							<h3 class="my-order-single-title"><?php esc_html_e( sprintf( 'Travelers info [ %s ]', get_the_title( $trip_id ) ), 'wp-travel' ); ?></h3>
 							<div class="row">
@@ -2257,9 +2292,9 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 								</div>
 							</div>
 						</div>
-						<?php
+							<?php
 					endif;
-					?>
+						?>
 
 					<?php
 					if ( isset( $details['total'] ) && $details['total'] > 0 ) :
@@ -2272,20 +2307,41 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 							if ( $order_details ) { // Multiple Trips. Now from 1.8.3 it also included in single trip.
 								$order_prices = get_post_meta( $booking_id, 'order_totals', true );
 								foreach ( $order_details as $order_detail ) {
-									$pax        = $order_detail['pax'];
-									$trip_price = $order_detail['trip_price'];
-									$total      = wp_travel_get_formated_price( $trip_price * $pax );
-									?>
-									<div class="my-order-price-breakdown-base-price-wrap">
-										<div class="my-order-price-breakdown-base-price">
-											<span class="my-order-head"><?php echo esc_html( get_the_title( $order_detail['trip_id'] ) ); ?></span>
-											<span class="my-order-tail">
-												<span class="my-order-price-detail">(<?php echo esc_attr( $pax ) . ' x ' . wp_travel_get_formated_price_currency( $trip_price ); ?>) </span>
-												<span class="my-order-price"><?php echo wp_travel_get_formated_price_currency( $total ); ?></span>
-											</span>
+
+									if ( isset( $order_detail['trip'] ) ) { // @since 3.0.0.
+										$total = $order_detail['trip_price'];
+										?>
+										<div class="my-order-price-breakdown-base-price-wrap">
+											<div class="my-order-price-breakdown-base-price">
+												<span class="my-order-head"><?php echo esc_html( get_the_title( $order_detail['trip_id'] ) ); ?></span>
+												<span class="my-order-tail">
+													<?php if ( ! empty( $order_detail['trip'] ) ) : ?>
+														<?php foreach ( $order_detail['trip'] as $category_id => $trip ) : ?>
+															<span class="my-order-price-detail">(<?php echo esc_attr( $trip['pax'] ) . ' x ' . wp_travel_get_formated_price_currency( $trip['price'], false, '', $booking_id ); ?>) </span>
+														<?php endforeach; ?>
+													<?php endif; ?>
+													<span class="my-order-price"><?php echo wp_travel_get_formated_price_currency( $total, false, '', $booking_id  ); ?></span>
+												</span>
+											</div>
 										</div>
-									</div>
-									<?php
+										<?php
+									} else { // Legacy Version.
+
+										$pax        = $order_detail['pax'];
+										$trip_price = $order_detail['trip_price'];
+										$total      = wp_travel_get_formated_price( $trip_price * $pax );
+										?>
+										<div class="my-order-price-breakdown-base-price-wrap">
+											<div class="my-order-price-breakdown-base-price">
+												<span class="my-order-head"><?php echo esc_html( get_the_title( $order_detail['trip_id'] ) ); ?></span>
+												<span class="my-order-tail">
+													<span class="my-order-price-detail">(<?php echo esc_attr( $pax ) . ' x ' . wp_travel_get_formated_price_currency( $trip_price, false, '', $booking_id  ); ?>) </span>
+													<span class="my-order-price"><?php echo wp_travel_get_formated_price_currency( $total, false, '', $booking_id  ); ?></span>
+												</span>
+											</div>
+										</div>
+										<?php
+									}
 									if ( isset( $order_detail['trip_extras'] ) && isset( $order_detail['trip_extras']['id'] ) && count( $order_detail['trip_extras']['id'] ) > 0 ) :
 										$extras = $order_detail['trip_extras'];
 										?>
@@ -2308,8 +2364,8 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 												$total = $price * $qty;
 												?>
 												<div class="my-order-price-breakdown-additional-service-item clearfix">
-													<span class="my-order-head"><?php echo esc_html( get_the_title( $extra_id ) ); ?> (<?php echo esc_attr( $qty ) . ' x ' . wp_travel_get_formated_price_currency( $price ); ?>)</span>
-													<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $total ); ?></span>
+													<span class="my-order-head"><?php echo esc_html( get_the_title( $extra_id ) ); ?> (<?php echo esc_attr( $qty ) . ' x ' . wp_travel_get_formated_price_currency( $price, false, '', $booking_id  ); ?>)</span>
+													<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $total, false, '', $booking_id  ); ?></span>
 												</div>
 											<?php endforeach; ?>
 
@@ -2325,7 +2381,7 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 										<span class="my-order-head"><?php echo esc_html( get_the_title( $trip_id ) ); ?></span>
 										<span class="my-order-tail">
 											<span class="my-order-price-detail"> x <?php echo esc_html( $pax ) . ' ' . __( 'Person/s', 'wp-travel' ); ?> </span>
-											<span class="my-order-price"><?php echo wp_travel_get_formated_price_currency( $details['sub_total'] ); ?></span>
+											<span class="my-order-price"><?php echo wp_travel_get_formated_price_currency( $details['sub_total'], false, '', $booking_id ); ?></span>
 										</span>
 									</div>
 								</div>
@@ -2336,26 +2392,26 @@ function wp_travel_view_booking_details_table( $booking_id, $hide_payment_column
 							<div class="my-order-price-breakdown-summary clearfix">
 								<div class="my-order-price-breakdown-sub-total">
 									<span class="my-order-head"><?php esc_html_e( 'Sub Total Price', 'wp-travel' ); ?></span>
-									<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $details['sub_total'] ); ?></span>
+									<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $details['sub_total'], false, '', $booking_id ); ?></span>
 								</div>
 
 								<?php if ( $details['discount'] ) : ?>
 									<div class="my-order-price-breakdown-coupon-amount">
 										<span class="my-order-head"><?php esc_html_e( 'Discount Price', 'wp-travel' ); ?></span>
-										<span class="my-order-tail my-order-right">- <?php echo wp_travel_get_formated_price_currency( $details['discount'] ); ?></span>
+										<span class="my-order-tail my-order-right">- <?php echo wp_travel_get_formated_price_currency( $details['discount'], false, '', $booking_id ); ?></span>
 									</div>
 								<?php endif; ?>
 
 								<div class="my-order-price-breakdown-tax-due">
 									<span class="my-order-head"><?php esc_html_e( 'Tax', 'wp-travel' ); ?> </span>
-									<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $details['tax'] ); ?></span>
+									<span class="my-order-tail my-order-right"><?php echo wp_travel_get_formated_price_currency( $details['tax'], false, '', $booking_id ); ?></span>
 								</div>
 							</div>
 						</div>
 						<div class="my-order-single-total-price clearfix">
 							<div class="my-order-single-field clearfix">
 								<span class="my-order-head"><?php esc_html_e( 'Total', 'wp-travel' ); ?></span>
-								<span class="my-order-tail"><?php echo wp_travel_get_formated_price_currency( $details['total'] ); ?></span>
+								<span class="my-order-tail"><?php echo wp_travel_get_formated_price_currency( $details['total'], false, '', $booking_id ); ?></span>
 							</div>
 						</div>
 					</div>
@@ -2447,7 +2503,7 @@ function wp_travel_view_payment_details_table( $booking_id ) {
 						<td>
 							<?php
 							if ( $payment_amount > 0 ) :
-								echo wp_travel_get_formated_price_currency( $payment_amount );
+								echo wp_travel_get_formated_price_currency( $payment_amount, false, '', $booking_id );
 							endif;
 							?>
 						</td>
@@ -2537,6 +2593,7 @@ function wp_travel_privacy_link() {
  */
 function wp_travel_get_strings() {
 	$localized_strings = array(
+		'from'					=> __( 'From', 'wp-travel' ),
 		'confirm'               => __( 'Are you sure you want to remove?', 'wp-travel' ),
 		'book_now'              => __( 'Book Now', 'wp-travel' ),
 		'book_n_pay'            => __( 'Book and Pay', 'wp-travel' ),
@@ -2549,30 +2606,35 @@ function wp_travel_get_strings() {
 		'activities'            => __( 'Activities', 'wp-travel' ),
 		'group_size'            => __( 'Group size', 'wp-travel' ),
 		'reviews'               => __( 'Reviews', 'wp-travel' ),
-		'locations'				=> __( 'Locations', 'wp-travel' ),
+		'locations'             => __( 'Locations', 'wp-travel' ),
 		'fixed_departure'       => __( 'Fixed departure', 'wp-travel' ),
 		'trip_duration'         => __( 'Trip duration', 'wp-travel' ),
+		'filter_by'             => __( 'Filter By', 'wp-travel' ),
+		'price'                 => __( 'Price', 'wp-travel' ),
+		'location'              => __( 'Location', 'wp-travel' ),
+		'show'                  => __( 'Show', 'wp-travel' ),
 
 		'bookings'              => array(
-			'pricing_name'   => __( 'Pricing Name', 'wp-travel' ),
-			'start_date'     => __( 'Start', 'wp-travel' ),
-			'end_date'       => __( 'End', 'wp-travel' ),
-			'group_size'     => __( 'Group (Min-Max)', 'wp-travel' ),
-			'seats_left'     => __( 'Seats left', 'wp-travel' ),
-			'pax'            => __( 'Pax', 'wp-travel' ),
-			'price'          => __( 'Price', 'wp-travel' ),
-			'arrival_date'   => __( 'Arrival date', 'wp-travel' ),
-			'departure_date' => __( 'Departure date', 'wp-travel' ),
-			'sold_out'       => __( 'Sold Out', 'wp-travel' ),
-			'select'         => __( 'Select', 'wp-travel' ),
-			'close'          => __( 'Close', 'wp-travel' ),
-			'book_now'       => __( 'Book Now', 'wp-travel' ),
+			'pricing_name'     => __( 'Pricing Name', 'wp-travel' ),
+			'start_date'       => __( 'Start', 'wp-travel' ),
+			'end_date'         => __( 'End', 'wp-travel' ),
+			'group_size'       => __( 'Group (Min-Max)', 'wp-travel' ),
+			'seats_left'       => __( 'Seats left', 'wp-travel' ),
+			'pax'              => __( 'Pax', 'wp-travel' ),
+			'price'            => __( 'Price', 'wp-travel' ),
+			'arrival_date'     => __( 'Arrival date', 'wp-travel' ),
+			'departure_date'   => __( 'Departure date', 'wp-travel' ),
+			'sold_out'         => __( 'Sold Out', 'wp-travel' ),
+			'select'           => __( 'Select', 'wp-travel' ),
+			'close'            => __( 'Close', 'wp-travel' ),
+			'book_now'         => __( 'Book Now', 'wp-travel' ),
+			'combined_pricing' => __( 'Pricing', 'wp-travel' ), //  Added for combined pricing label for categorized pricing @since 3.0.0
 		),
-		'alert' => array(
-			'required_pax_alert'    => __( 'Pax is required.', 'wp-travel' ),
-			'min_pax_alert'         => __( 'Pax should be greater than or equal to {min_pax}.', 'wp-travel' ),
-			'max_pax_alert'         => __( 'Pax should be lower than or equal to {max_pax}.', 'wp-travel' ),
-			'both_pax_alert'        => __( 'Pax should be between {min_pax} and {max_pax}.', 'wp-travel' ),
+		'alert'                 => array(
+			'required_pax_alert' => __( 'Pax is required.', 'wp-travel' ),
+			'min_pax_alert'      => __( 'Pax should be greater than or equal to {min_pax}.', 'wp-travel' ),
+			'max_pax_alert'      => __( 'Pax should be lower than or equal to {max_pax}.', 'wp-travel' ),
+			'both_pax_alert'     => __( 'Pax should be between {min_pax} and {max_pax}.', 'wp-travel' ),
 		),
 
 	);
@@ -2591,25 +2653,28 @@ function wp_travel_get_strings() {
 function wp_travel_pax_alert_message( $min = false, $max = false ) {
 
 	// Strings
-	$strings               = wp_travel_get_strings();
+	$strings = wp_travel_get_strings();
 
 	$range_alert = '';
 	if ( $min && $max ) {
 		$range_alert = isset( $strings['alert']['both_pax_alert'] ) ? $strings['alert']['both_pax_alert'] : __( 'Pax should be between {min_pax} and {max_pax}.', 'wp-travel' );
 	} elseif ( $min ) {
 		$range_alert = isset( $strings['alert']['min_pax_alert'] ) ? $strings['alert']['min_pax_alert'] : __( 'Pax should be greater than or equal to {min_pax}.', 'wp-travel' );
-	} elseif( $max ) {
+	} elseif ( $max ) {
 		$range_alert = isset( $strings['alert']['max_pax_alert'] ) ? $strings['alert']['max_pax_alert'] : __( 'Pax should be lower than or equal to {max_pax}.', 'wp-travel' );
 	}
 
-	$pax_tags = array(
+	$pax_tags           = array(
 		'{min_pax}' => $min,
 		'{max_pax}' => $max,
 	);
-	$range_alert = str_replace( array_keys( $pax_tags ), $pax_tags, $range_alert );
+	$range_alert        = str_replace( array_keys( $pax_tags ), $pax_tags, $range_alert );
 	$required_pax_alert = isset( $strings['alert']['required_pax_alert'] ) ? $strings['alert']['required_pax_alert'] : __( 'Pax is required.', 'wp-travel' );
 
-	return array( 'range' => $range_alert, 'required' => $required_pax_alert );
+	return array(
+		'range'    => $range_alert,
+		'required' => $required_pax_alert,
+	);
 }
 
 /**
@@ -2843,16 +2908,29 @@ function wp_travel_get_fixed_departure_date( $trip_id ) {
 			usort( $dates, 'wp_travel_date_sort' );
 			$show_multiple = apply_filters( 'wp_travel_show_multiple_fixed_departure_dates', false );
 
+			$date_found = false;
 			if ( $show_multiple ) {
 				echo '<ul>';
 				foreach ( $dates as $date ) {
-					printf( '<li>%s</li>', date_i18n( $date_format, strtotime( $date ) ) );
+					if ( date( 'Y-m-d ', strtotime( $date ) ) >= date( 'Y-m-d' ) ) {
+						$date_found = true;
+						printf( '<li>%s</li>', date_i18n( $date_format, strtotime( $date ) ) );
+					}
 				}
 				echo '</ul>';
 			} else {
-				if ( isset( $dates[0] ) ) {
-					printf( '%s', date_i18n( $date_format, strtotime( $dates[0] ) ) );
+				if ( is_array( $dates ) && count( $dates ) > 0 ) {
+					foreach ( $dates as $date ) {
+						if ( date( 'Y-m-d ', strtotime( $date ) ) >= date( 'Y-m-d' ) ) {
+							$date_found = true;
+							printf( '%s', date_i18n( $date_format, strtotime( $date ) ) );
+							break;
+						}
+					}
 				}
+			}
+			if ( ! $date_found ) {
+				echo __( 'N/A', 'wp-travel' );
 			}
 		}
 	}
@@ -2965,83 +3043,30 @@ function wp_travel_get_trip_pricing_option( $trip_id = null ) {
 	$dates         = array();
 	$pricing       = array();
 	$trip_duration = array();
-	// $customized_pricing_options = array(); // To use in api.
-	$pricing_option_type = wp_travel_get_pricing_option_type( $trip_id );
-	$fixed_departure     = get_post_meta( $trip_id, 'wp_travel_fixed_departure', true );
 
 	// Date. [need in multiple pricing also, if multiple date is disabled].
-	$start_date = get_post_meta( $trip_id, 'wp_travel_start_date', true );
-	$end_date   = get_post_meta( $trip_id, 'wp_travel_end_date', true );
+	$start_date         = get_post_meta( $trip_id, 'wp_travel_start_date', true );
+	$end_date           = get_post_meta( $trip_id, 'wp_travel_end_date', true );
+	$days               = get_post_meta( $trip_id, 'wp_travel_trip_duration', true );
+	$night              = get_post_meta( $trip_id, 'wp_travel_trip_duration_night', true );
+	$default_group_size = get_post_meta( $trip_id, 'wp_travel_group_size', true );
+	$default_group_size = ! empty( $default_group_size ) ? $default_group_size : 999;
 
-	$days  = get_post_meta( $trip_id, 'wp_travel_trip_duration', true );
-	$night = get_post_meta( $trip_id, 'wp_travel_trip_duration_night', true );
+	// Fixed Departures
+	$fixed_departure         = get_post_meta( $trip_id, 'wp_travel_fixed_departure', true );
+	$multiple_fixed_departue = get_post_meta( $trip_id, 'wp_travel_enable_multiple_fixed_departue', true );
+	// $available_trip_dates    = get_post_meta( $trip_id, 'wp_travel_multiple_trip_dates', true );
+
 	if ( ! empty( $days ) ) {
 		$trip_duration['days']  = $days;
 		$trip_duration['night'] = $night;
 	}
-	if ( 'single-price' === $pricing_option_type ) {
-		$group_size     = get_post_meta( $trip_id, 'wp_travel_group_size', true );
-		$inventory_data = array(
-			'status_message' => __( 'N/A', 'wp-travel' ),
-			'sold_out'       => false,
-			'available_pax'  => 0,
-			'booked_pax'     => 0,
-			'pax_limit'      => 0,
-			'min_pax'        => 1,
-			'max_pax'        => $group_size,
-		);
 
-		// Price.
-		$trip_price   = wp_travel_get_trip_price( $trip_id ); // Regular price.
-		$pricing_data = array(
-			'pricing_name'    => '',
-			'price_key'       => '',
-			'group_size'      => wp_travel_get_group_size(),
-			'enable_sale'     => ( wp_travel_is_enable_sale( $trip_id ) ) ? 'yes' : 'no',
-			'regular'         => wp_travel_get_actual_trip_price( $trip_id, '', true ),
-			'price'           => wp_travel_get_actual_trip_price( $trip_id ),
-			'price_per'       => wp_travel_get_price_per_text( $trip_id ),
-			'price_per_key'   => wp_travel_get_price_per_text( $trip_id, '', true ),
+	$settings                                       = wp_travel_get_settings();
+	$enable_multiple_category_on_pricing            = $settings['enable_multiple_category_on_pricing'];
+	$wp_travel_user_after_multiple_pricing_category = get_option( 'wp_travel_user_after_multiple_pricing_category' ); // Hide enable_multiple_category_on_pricing option if user is new from @since 3.0.0
+	if ( 'yes' === $wp_travel_user_after_multiple_pricing_category || 'yes' === $enable_multiple_category_on_pricing ) : // New Multiple category on pricing. // From this version single pricing is removed for new users.
 
-			'status'          => $inventory_data['status_message'], // Seats left.
-			'sold_out'        => $inventory_data['sold_out'],
-			'available_pax'   => $inventory_data['available_pax'],
-			'booked_pax'      => $inventory_data['booked_pax'],
-			'pax_limit'       => $inventory_data['pax_limit'],
-			'min_pax'         => $inventory_data['min_pax'],
-			'max_pax'         => $inventory_data['max_pax'],
-			'fixed_departure' => $fixed_departure,
-		);
-
-		if ( 'no' === $fixed_departure ) {
-			$pricing_data['trip_duration_days']  = $days;
-			$pricing_data['trip_duration_night'] = $night;
-		} else {
-			$pricing_data['arrival_date']   = $start_date;
-			$pricing_data['departure_date'] = $end_date;
-
-			$inventory_data                = apply_filters( 'wp_travel_inventory_data', $inventory_data, $trip_id, '', $start_date );
-			$pricing_data['status']        = $inventory_data['status_message'];
-			$pricing_data['sold_out']      = $inventory_data['sold_out'];
-			$pricing_data['available_pax'] = $inventory_data['available_pax'];
-			$pricing_data['booked_pax']    = $inventory_data['booked_pax'];
-			$pricing_data['pax_limit']     = $inventory_data['pax_limit'];
-			$pricing_data['min_pax']       = $inventory_data['min_pax'];
-			$pricing_data['max_pax']       = $inventory_data['max_pax'];
-		}
-
-		// For api uses.
-		// $customized_pricing_options[ $trip_id ] = array(
-		// 'pricing_name' => $pricing_data['pricing_name'],
-		// 'price_key'    => $pricing_data['price_key'],
-		// 'type'         => $type,
-		// 'price'        => $pricing_data['price'],
-		// 'dates'        => is_array( $trip_dates ) && count( $trip_dates ) > 0 ? $trip_dates : null,
-		// );
-		// End of - for api uses.
-		$pricing[] = $pricing_data;
-
-	} elseif ( 'multiple-price' === $pricing_option_type ) {
 		// Price.
 		$pricing_options = get_post_meta( $trip_id, 'wp_travel_pricing_options', true );
 
@@ -3049,128 +3074,145 @@ function wp_travel_get_trip_pricing_option( $trip_id = null ) {
 		$available_trip_dates = get_post_meta( $trip_id, 'wp_travel_multiple_trip_dates', true );
 
 		// variable used for api data.
-		// $multiple_customized_pricing_options = array();
 		// End of variable used for api data.
-		if ( is_array( $pricing_options ) && count( $pricing_options ) > 0 ) {
-			foreach ( $pricing_options as $option_key => $pricing_option ) {
-				$pricing_name         = isset( $pricing_option['pricing_name'] ) ? $pricing_option['pricing_name'] : '';
-				$price_key            = isset( $pricing_option['price_key'] ) ? $pricing_option['price_key'] : '';
-				$pricing_type         = isset( $pricing_option['type'] ) ? $pricing_option['type'] : '';
-				$pricing_custom_label = isset( $pricing_option['custom_label'] ) ? $pricing_option['custom_label'] : '';
-				$pricing_option_price = isset( $pricing_option['price'] ) ? $pricing_option['price'] : '';
-				$pricing_sale_enabled = isset( $pricing_option['enable_sale'] ) ? $pricing_option['enable_sale'] : 'no';
-				$pricing_sale_price   = isset( $pricing_option['sale_price'] ) ? $pricing_option['sale_price'] : '';
-				$pricing_min_pax      = isset( $pricing_option['min_pax'] ) ? $pricing_option['min_pax'] : '';
-				$pricing_max_pax      = isset( $pricing_option['max_pax'] ) ? $pricing_option['max_pax'] : '';
-
-				// Default Inventory data.
-				$inventory_data = array(
+		$pricing_option_type = wp_travel_get_pricing_option_type( $trip_id );
+		if ( 'single-price' === $pricing_option_type ) { // Legacy Support for single price option @since 3.0.0
+			$pricing_data = array(
+				'pricing_name'             => 'Default Price',
+				'price_key'                => 'default-pricing',
+				'group_size'               => $default_group_size,
+				'fixed_departure'          => $fixed_departure,
+				'multiple_fixed_departure' => $multiple_fixed_departue,
+				'arrival_date'             => $start_date,
+				'departure_date'           => $end_date,
+				'categories'               => array(
+					array(
+						'type'        => 'default',
+						'price_per'   => wp_travel_get_price_per_text( $trip_id ),
+						// 'sale_price'  => wp_travel_get_actual_trip_price( $trip_id ),
+						'enable_sale' => ( wp_travel_is_enable_sale_price( $trip_id ) ) ? 'yes' : 'no',
+						'regular'     => wp_travel_get_actual_trip_price( $trip_id, '', true ),
+						'price'       => wp_travel_get_actual_trip_price( $trip_id ),
+					),
+				),
+				'inventory' => array(
 					'status_message' => __( 'N/A', 'wp-travel' ),
 					'sold_out'       => false,
-					'available_pax'  => 0,
+					'available_pax'  => $default_group_size,
 					'booked_pax'     => 0,
-					'pax_limit'      => 0,
-					'min_pax'        => $pricing_min_pax,
-					'max_pax'        => $pricing_max_pax,
-				);
+					'pax_limit'      => $default_group_size,
+					'min_pax'        => 1,
+					'max_pax'        => $default_group_size,
+				),
+				'pricing_id'              => 'single-pricing-id',
+			);
+			if ( 'no' === $fixed_departure ) {
+				$pricing_data['trip_duration_days'] = $days;
+				$pricing_data['trip_duration_night'] = $night;
+			}
+			$pricing['single-pricing'] = $pricing_data; // Legacy single pricing migration @since 3.0.0
+		} elseif ( 'multiple-price' === $pricing_option_type ) { // Case: Multiple Pricing.
+			if ( is_array( $pricing_options ) && count( $pricing_options ) > 0 ) :
+				foreach ( $pricing_options as $pricing_id => $pricing_option ) {
+					$pricing_name    = isset( $pricing_option['pricing_name'] ) ? $pricing_option['pricing_name'] : '';
+					$price_key       = isset( $pricing_option['price_key'] ) ? $pricing_option['price_key'] : '';
+					$pricing_min_pax = ! empty( $pricing_option['min_pax'] ) ? $pricing_option['min_pax'] : 1;
+					$pricing_max_pax = ! empty( $pricing_option['max_pax'] ) ? $pricing_option['max_pax'] : $default_group_size;
 
-				$pricing_data = array(
-					'pricing_name'    => $pricing_name,
-					'price_key'       => $price_key,
-					'group_size'      => '',
-					'enable_sale'     => $pricing_sale_enabled,
-					'regular'         => wp_travel_get_actual_trip_price( $trip_id, $price_key, true ),
-					'price'           => wp_travel_get_actual_trip_price( $trip_id, $price_key ),
-					'price_per'       => wp_travel_get_price_per_text( $trip_id, $price_key ),
-					'price_per_key'   => wp_travel_get_price_per_text( $trip_id, $price_key, true ),
+					$pricing_categories = isset( $pricing_option['categories'] ) ? $pricing_option['categories'] : array();
 
-					'fixed_departure' => $fixed_departure,
-					// Inventory defaults.
-					'status'          => $inventory_data['status_message'], // Seats left.
-					'sold_out'        => $inventory_data['sold_out'],
-					'available_pax'   => $inventory_data['available_pax'],
-					'booked_pax'      => $inventory_data['booked_pax'],
-					'pax_limit'       => $inventory_data['pax_limit'],
-					'min_pax'         => $inventory_data['min_pax'],
-					'max_pax'         => $inventory_data['max_pax'],
-				);
+					// Pricing Category.
+					$categories = array();
 
-				// For api uses.
-				// $multiple_customized_pricing_options[] = array(
-				// 'pricing_name' => $pricing_data['pricing_name'],
-				// 'price_key'    => $pricing_data['price_key'],
-				// 'type'         => $pricing_type,
-				// 'price'        => $pricing_data['price'],
-				// 'dates'        => is_array( $trip_dates ) && count( $trip_dates ) > 0 ? $trip_dates : null,
-				// );
-				// End of - for api uses.
-				if ( 'no' === $fixed_departure ) {
-					$pricing_data['trip_duration_days']  = $days;
-					$pricing_data['trip_duration_night'] = $night;
-
-					$pricing[] = $pricing_data; // Trip duration, multiple pricing.
-				} else {
-					$multiple_fixed_departue = get_post_meta( $trip_id, 'wp_travel_enable_multiple_fixed_departue', true );
-
-					if ( 'yes' === $multiple_fixed_departue ) {
-						// Dates.
-						$available_trip_dates = get_post_meta( $trip_id, 'wp_travel_multiple_trip_dates', true );
-						foreach ( $available_trip_dates as $date_options_key => $date_option ) {
-							$start_date = isset( $date_option['start_date'] ) ? $date_option['start_date'] : null;
-							$end_date   = isset( $date_option['end_date'] ) ? $date_option['end_date'] : null;
-							$date_label = isset( $date_option['date_label'] ) ? $date_option['date_label'] : null;
-
-							$price_keys = isset( $date_option['pricing_options'] ) ? $date_option['pricing_options'] : null; // Price key to validate pricing.
-
-							if ( in_array( $price_key, $price_keys ) ) {
-
-								// Inventory option in multiple dates.
-								$inventory_data = apply_filters( 'wp_travel_inventory_data', $inventory_data, $trip_id, $price_key, $start_date );
-
-								$pricing_data['status']        = $inventory_data['status_message'];
-								$pricing_data['sold_out']      = $inventory_data['sold_out'];
-								$pricing_data['available_pax'] = $inventory_data['available_pax'];
-								$pricing_data['booked_pax']    = $inventory_data['booked_pax'];
-								$pricing_data['pax_limit']     = $inventory_data['pax_limit'];
-								$pricing_data['min_pax']       = $inventory_data['min_pax'];
-								$pricing_data['max_pax']       = $inventory_data['max_pax'];
-								// Inventory Ends.
-								$pricing_data['arrival_date']   = $start_date;
-								$pricing_data['departure_date'] = $end_date;
-								$pricing_data['date_label']     = $date_label;
-								$pricing[]                      = $pricing_data;
-							}
+					if ( is_array( $pricing_categories ) && count( $pricing_categories ) > 0 ) {
+						foreach ( $pricing_categories as $category_id => $pricing_category ) {
+							// $categories[ $category_id ]                = $pricing_category;
+							$categories[ $category_id ]['type']        = $pricing_category['type'];
+							$categories[ $category_id ]['price_per']   = $pricing_category['price_per'];
+							// $categories[ $category_id ]['sale_price']  = $pricing_category['sale_price'];
+							$categories[ $category_id ]['enable_sale'] = isset( $pricing_category['enable_sale'] ) ? $pricing_category['enable_sale'] : 'no';
+							$categories[ $category_id ]['regular']     = wp_travel_get_price( $trip_id, true, $pricing_id, $category_id );
+							$categories[ $category_id ]['price']       = wp_travel_get_price( $trip_id, false, $pricing_id, $category_id );
 						}
 					} else {
-						$pricing_data['arrival_date']   = $start_date;
-						$pricing_data['departure_date'] = $end_date;
-						// Inventory option in single dates.
-						$inventory_data                = apply_filters( 'wp_travel_inventory_data', $inventory_data, $trip_id, $price_key, $start_date );
-						$pricing_data['status']        = $inventory_data['status_message'];
-						$pricing_data['sold_out']      = $inventory_data['sold_out'];
-						$pricing_data['available_pax'] = $inventory_data['available_pax'];
-						$pricing_data['booked_pax']    = $inventory_data['booked_pax'];
-						$pricing_data['pax_limit']     = $inventory_data['pax_limit'];
-						$pricing_data['min_pax']       = $inventory_data['min_pax'];
-						$pricing_data['max_pax']       = $inventory_data['max_pax'];
-						// Inventory Ends.
-						$pricing[] = $pricing_data;  // single date multiple pricing.
+						$categories[ $pricing_id ]['type']        = $pricing_option['type'];
+						$categories[ $pricing_id ]['price_per']   = $pricing_option['price_per'];
+						// $categories[ $pricing_id ]['sale_price']  = $pricing_option['sale_price'];
+						$categories[ $pricing_id ]['enable_sale'] = isset( $pricing_option['enable_sale'] ) ? $pricing_option['enable_sale'] : 'no';
+						$categories[ $pricing_id ]['regular']     = wp_travel_get_price( $trip_id, true, $pricing_id, '', $pricing_option['price_key'] );
+						$categories[ $pricing_id ]['price']       = $categories[ $pricing_id ]['enable_sale'] === 'yes' ? $pricing_option['sale_price'] : $pricing_option['price'];
+					}
+
+					$inventory_data = array(
+						'max_pax'        => $pricing_max_pax,
+						'min_pax'        => $pricing_min_pax,
+						'available_pax'  => $pricing_max_pax,
+						'status_message' => '',
+						'sold_out'       => false,
+						'booked_pax'     => 0,
+						'pax_limit'      => $pricing_max_pax,
+					);
+
+					$pricing_data = array(
+						'pricing_name'             => $pricing_name,
+						'price_key'                => $price_key,
+						'group_size'               => $default_group_size,
+						'categories'               => $categories,
+						'fixed_departure'          => $fixed_departure,
+						'multiple_fixed_departure' => $multiple_fixed_departue,
+						'trip_duration_days'       => $days,
+						'trip_duration_night'      => $night,
+						'arrival_date'             => '',
+						'departure_date'           => '',
+						'status'                   => '',
+						'pricing_id'               => $pricing_id,
+					);
+
+					if ( 'yes' === $fixed_departure ) {
+						// If Multiple Fixed Departure Enabled.
+						if ( 'yes' === $multiple_fixed_departue ) {
+							$available_trip_dates = get_post_meta( $trip_id, 'wp_travel_multiple_trip_dates', true );
+							foreach ( $available_trip_dates as $date_options_key => $date_option ) {
+								$start_date = isset( $date_option['start_date'] ) ? $date_option['start_date'] : null;
+								$end_date   = isset( $date_option['end_date'] ) ? $date_option['end_date'] : null;
+								$date_label = isset( $date_option['date_label'] ) ? $date_option['date_label'] : null;
+
+								$price_keys = isset( $date_option['pricing_options'] ) ? $date_option['pricing_options'] : null; // Price key to validate pricing. need to remove in future version. use $pricing_id instead of this.
+								if ( is_array( $price_keys ) && in_array( $price_key, $price_keys ) ) {
+
+									// Inventory option in multiple dates.
+									$inventory_data = apply_filters( 'wp_travel_inventory_data', $inventory_data, $trip_id, $price_key, $start_date );
+
+									$pricing_data['date_id']        = $date_options_key;
+									$pricing_data['arrival_date']   = $start_date;
+									$pricing_data['departure_date'] = $end_date;
+									$pricing_data['date_label']     = $date_label;
+									$pricing_data['inventory']      = $inventory_data;
+									$pricing[]                      = $pricing_data;
+								}
+							}
+						} else { // Fixed departure but not multi fixed departure.
+							$pricing_data['arrival_date']   = $start_date;
+							$pricing_data['departure_date'] = $end_date;
+							// Inventory option in single dates.
+							$inventory_data            = apply_filters( 'wp_travel_inventory_data', $inventory_data, $trip_id, $price_key, $start_date );
+							$pricing_data['inventory'] = $inventory_data;
+							$pricing[ $pricing_id ]    = $pricing_data;
+						}
+					} else {
+						$pricing_data['inventory'] = $inventory_data;
+						$pricing[ $pricing_id ] = $pricing_data;
 					}
 				}
-			}
-		}
-
-		// variable used for api data.
-		// $customized_pricing_options[ $trip_id ] = $multiple_customized_pricing_options;
-		// End of variable used for api data.
-	}
+			endif;
+		} //  End Case: Multiple Pricing.
+	endif;
 
 	return array(
 		'pricing_data' => $pricing,
-		// 'pricing_options' => $customized_pricing_options, // option including date
-		// 'pricing_dates'   => '',
 	);
 }
+
 // @since 2.0.8
 function wp_travel_trip_pricing_sort_by_date( $pricings, $sort = 'asc' ) {
 	if ( ! $pricings ) {
@@ -3193,7 +3235,8 @@ function wp_travel_trip_pricing_sort_by_date( $pricings, $sort = 'asc' ) {
  *
  * @param array $trip_id Current Trip ID.
  *
- * @since 2.0.9 */
+ * @since 2.0.9 // Need to depricate
+ **/
 function wp_travel_get_trip_listing_option( $trip_id = null ) {
 
 	if ( ! $trip_id ) {
@@ -3206,9 +3249,9 @@ function wp_travel_get_trip_listing_option( $trip_id = null ) {
 	}
 
 	// Dates and prices.
-	$dates         = array();
-	$pricing       = array();
-	$trip_duration = array();
+	$dates               = array();
+	$pricing             = array();
+	$trip_duration       = array();
 	$pricing_option_type = wp_travel_get_pricing_option_type( $trip_id );
 	$fixed_departure     = get_post_meta( $trip_id, 'wp_travel_fixed_departure', true );
 
@@ -3240,7 +3283,7 @@ function wp_travel_get_trip_listing_option( $trip_id = null ) {
 			'pricing_name'    => '',
 			'price_key'       => '',
 			'group_size'      => wp_travel_get_group_size(),
-			'enable_sale'     => ( wp_travel_is_enable_sale( $trip_id ) ) ? 'yes' : 'no',
+			'enable_sale'     => ( wp_travel_is_enable_sale_price( $trip_id ) ) ? 'yes' : 'no',
 			'regular'         => wp_travel_get_actual_trip_price( $trip_id, '', true ),
 			'price'           => wp_travel_get_actual_trip_price( $trip_id ),
 			'price_per'       => wp_travel_get_price_per_text( $trip_id ),
@@ -3284,7 +3327,7 @@ function wp_travel_get_trip_listing_option( $trip_id = null ) {
 
 		// End of variable used for api data.
 		if ( is_array( $pricing_options ) && count( $pricing_options ) > 0 ) {
-			foreach ( $pricing_options as $option_key => $pricing_option ) {
+			foreach ( $pricing_options as $pricing_id => $pricing_option ) {
 				$pricing_name         = isset( $pricing_option['pricing_name'] ) ? $pricing_option['pricing_name'] : '';
 				$price_key            = isset( $pricing_option['price_key'] ) ? $pricing_option['price_key'] : '';
 				$pricing_type         = isset( $pricing_option['type'] ) ? $pricing_option['type'] : '';

@@ -18,7 +18,9 @@ Text Domain: walkinbrugestheme
 6. padding
 7. Color scheme
 8. social media section
-
+9. removing filter bar on all trips page
+10. less all trips page padding
+*/
 
 /* ==1==
 
@@ -336,4 +338,23 @@ styling social media section */
 #client-testimonial .entry-header {
     display: block;
     text-align: center;
+}
+
+/* 
+==9==
+removing filter bar at top
+*/
+
+.wp-travel-toolbar {
+display: none;
+}
+
+/* 
+==10==
+
+less padding on all trips page 
+*/
+
+#inner-content-wrapper {
+    padding: 40px 0;
 }

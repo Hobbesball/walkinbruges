@@ -147,3 +147,4 @@ Stack trace:
 [31-Oct-2019 10:26:03 UTC] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /app/public/wp-content/themes/travel-ultimate-child/functions.php on line 387
 [31-Oct-2019 10:26:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
 [31-Oct-2019 11:02:50 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[31-Oct-2019 11:26:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128

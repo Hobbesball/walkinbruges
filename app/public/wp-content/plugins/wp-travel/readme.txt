@@ -3,9 +3,9 @@ Contributors: wptravel, WEN Solutions
 Tags: tour-operator, travel, travel-booking, travel-agency, tour-booking, paypal-express-checkout, travel-itinerary, trekking, tour-itinerary, travel-booking-engine, trekking, tour itineraries, tour operators, tour accommodation listings, travel destinations, travel locations, travel maps, trip book, travel payment, tour package payments
 Donate link: https://wptravel.io/downloads/?utm_source=donate&utm_campaign=WP%20Plugin
 Requires at least: 4.4.0
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Requires PHP: 5.5
-Stable tag: 2.1.0
+Stable tag: 3.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -230,6 +230,102 @@ Before updating plugin please check ["our latest release notes"](http://wptravel
 
 == Changelog ==
 
+= 3.0.7 =
+Release Date: 18th October, 2019
+
+Enhancement :
+
+* Trip Fact enhanced. Now update in trip fact from settings will also be render in trip.
+* Enhancement : Trip fact options are editable for single select and multiple select.
+* Booking Status Refund added to update booking status to refund manually.
+
+Fixes:
+
+* Price Per Field empty issue.
+* Minor Translation issue fixes on the price per category text. like: adult, child, etc.
+* In Bank Deposit settings, the last detail/bank field can not be removed in the admin settings.
+* Travel Date is not displaying in case of Trip Duration.
+
+Deprecated :
+
+* Function 'wp_travel_get_pricing_name_by_key' is deprecated use 'wp_travel_get_pricing_category_by_key' instead.
+
+= 3.0.6 =
+Release Date: 12th October, 2019
+
+* Fixes: Used minified styles and scripts.
+* Fixes: Checkout page form filed layout issue with accordion.
+* Fixes: Made Per person and pricing category text translation ready.
+* Fixes: View Gallery link on the thumbnail is not displaying if advanced gallery is used.
+
+= 3.0.5 =
+Release Date: 3rd October, 2019
+
+* Fixes: Book Now buttons hidden conflict with bootstrap accordion on the checkout page.
+* Fixes: Invalid argument supplied for foreach() in helpers-price.php in case of no pricing option added in admin Dates and Price Tab.
+* Fixes: Added a separate class for each form field in the Enquiry form so that it would be easy to give the precise fix.
+* Fixes: Pax Picker input field layout issue in Firefox.
+
+= 3.0.4 =
+Release Date: 2nd October, 2019
+
+* Fixes: Partial Price on trip is not displaying in the checkout page mini cart section.
+* Fixes: Undefined variable: pricing_options in helpers-price.php
+* Fixes: Minor layout issue with Pax Picker and mapquest. Pax Picker fields are stacked under the map.
+* Fixes: Admin Trip Price initial letter is hidden under currency. The issue occurs only with double letter currency.
+* Fixes: Pricing issue related to Standard PayPal is fixed. In the case of multiple pricing, price in the cart and the PayPal Payment Price is different.
+* Fixes: Pricing issue in cart page in case of single pricing is fixed.
+
+= 3.0.3 =
+Release Date: 23rd September, 2019
+
+* Fixes: Undefined index if PAX limit reached. If Inventory is on and booked all available PAX, then undefined index $min and $max is showing in log.
+* Fixes: Displayed group size value in the featured section of single trip page.
+* Fixes: Booking can be made even selected pax is less than min pax in Fixed departure listing.
+
+Enhancement:
+
+* Support for multiple currency symbols. It will enable Multiple currencies for all of your trips. For this, You need to WP Travel Pro with multiple Currency enabled.
+
+= 3.0.2 =
+Release Date: 20th September, 2019
+
+* Fixes: Shows No Size limit when No max-limit.
+* Fixes: Single Pricing Date Selector fixes for duration option.
+
+= 3.0.1 =
+Release Date: 18th September, 2019
+
+* Fixes: Notice: Undefined variable: pricing_option on helpers file.
+* Fixes: Min-max pax is no-more required on pricing category.
+
+= 3.0.0 =
+Release Date: 11th September, 2019
+
+Enhancement:
+
+* Multiple Pricing Category support in a pricing option. Now, you can assign multiple categories like Child, adult in a pricing option. You have to select multiple pricing for this feature with WP Travel Utilities enabled.
+* Pricing layout updated to select pax and price in the trip single page. Now it uses pax picker dropdown to select pax as per pricing category.
+* Meta Structure update for the trip to support Multiple Category on every pricing option.
+* Removed Single Pricing option for New User since WP Travel 3.0.0. Old WP Travel User still have access to use a single pricing option.
+* Added currency symbol of Armenian Dram (AMD).
+
+Fixes:
+
+* Displaying sale price even pricing has no sale price in case of multiple pricing. When getting min pricing and the min pricing doesn't have any sale price but any of the prices have sale price then the current min price is also treated like it has sale price and displaying sale value same as price value.
+
+= 2.1.1 =
+Release Date: 3rd September, 2019
+
+Fixes:
+
+* Bank Deposite is not being disabled from the settings.
+* Bank Deposite responsive issue on WP Travel Dashboard page.
+* Shortcode WP_TRAVEL_ITINERARIES attributes are not working.
+* Displaying old fixed departue in the featured section.
+* CSS conflict with wp-picker input field.
+* Cart page empty pax and PHP warning fixed.
+
 = 2.1.0 =
 Release Date: 19th August, 2019
 
@@ -277,7 +373,7 @@ Fixes:
 * Group size of multiple pricing is displayed in the featured section. Previously group size value is displaying from single pricing option though pricing option set as multiple pricing options.
 * FAQs are not being correctly saved on admin trips page. If global FAQs are enabled by WP Travel Utilities plugin and added global FAQ in first and then deactivate utilities. This will not save FAQ correctly.
 * Fixed settings fields data are lost if addons disabled. It will not save settings of disabled addons if we update settings after disabling addons from addons settings.
-* Trip FAQ accordion conflict with Trip Facts. 
+* Trip FAQ accordion conflict with Trip Facts.
 
 Optimize
 * Trip code on frontend tabs optimized.
@@ -303,13 +399,13 @@ Enhancement:
 
 * Added Multiple pricing available dates in trip and related trip page.
 * Function wp_travel_get_min_price_key enhanced. Now only trip id param is used to return min price key.
-* Hook added to hide price per text in Trip page, related trip section and trip archive page. 
+* Hook added to hide price per text in Trip page, related trip section and trip archive page.
 
 Fixes:
 
 * Trip offer not working for multiple pricing option.
 * Bank Deposit not working in wp travel dashboard.
-* Fixed available date shows N/A in case of multiple date. 
+* Fixed available date shows N/A in case of multiple date.
 
 = 2.0.4=
 Release Date: 9th June, 2019
@@ -374,8 +470,8 @@ Fixes:
 * Review reply link not working is fixed.
 * Offer sign not showing for multiple pricing.
 * Coupon tab multiple icon on tab label.
-* WP Travel Notice label text updated. 
-* Minor layout issue fixes for admin settings. 
+* WP Travel Notice label text updated.
+* Minor layout issue fixes for admin settings.
 
 = 2.0.0 =
 Release Date: 14th May, 2019
@@ -413,7 +509,7 @@ Release Date: 22nd April 2019
 
 Enhancement:
 
-* Set WP Travel Dashboard tab menu priority to change placement of tabs. 
+* Set WP Travel Dashboard tab menu priority to change placement of tabs.
 
 Fixes:
 
