@@ -20,6 +20,8 @@ Text Domain: walkinbrugestheme
 8. social media section
 9. removing filter bar on all trips page
 10. less all trips page padding
+11. logo styling
+12: navbar styling
 */
 
 /* ==1==
@@ -63,10 +65,12 @@ styling the front page site title and tagline */
 
 #frontpagetitle {
     color:white;
+    font-size: 4em;
+
 }
 
 #frontpagetagline {
-    font-size: 2em;
+    font-size: 1.25em;
     color:white;
 }
 
@@ -91,6 +95,7 @@ setting global font options */
 
 /* top level font */
 .header-font-5 h1,
+#frontpagetagline,
 .header-font-5 h2,
 .header-font-5 h3,
 .header-font-5 h4,
@@ -357,4 +362,43 @@ less padding on all trips page
 
 #inner-content-wrapper {
     padding: 40px 0;
+}
+
+/* 
+==11==
+
+making logo bigger in the nav menu
+*/
+
+.site-branding {
+    float: left;
+    padding: 20px 0 0 0;
+    display: flex;
+    align-items: center;
+    min-height: 120px;
+}
+
+.site-logo img {
+    max-height: 100px;
+    width: auto;
+    margin-right: 20px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 
+==12==
+
+making logo bigger in the nav menu
+*/
+.wrapper.main-menu {
+    border-bottom: none;
+}
+
+
+.section-title {
+    font-size: 42px;
 }

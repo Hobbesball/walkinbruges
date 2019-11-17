@@ -66,7 +66,7 @@ function travel_ultimate_header_image() {
                     <header class="page-header">
                     <div>
                     <h1 id="frontpagetitle" ><?php echo $site_name; ?></h1>
-					<!--<p id="frontpagetagline"><?php echo esc_html( $site_description ); /* WPCS: xss ok. */ ?></p> -->
+					<p id="frontpagetagline"><?php echo esc_html( $site_description ); /* WPCS: xss ok. */ ?></p>
 					</div>
                         <?php 
                         //this needs some cleaning up
@@ -286,7 +286,7 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
 
 // Simply remove anything that looks like an archive title prefix ("Archive:", "Foo:", "Bar:").
 add_filter('get_the_archive_title', function ($title) {
-    return preg_replace('/^\w+: /', '', $title);
+    return preg_replace('/^\w+: /', '', "All Walks");
 });
 
 ?>
@@ -343,7 +343,7 @@ function travel_ultimate_render_about_section( $content_details = array(), $tour
                                     <?php } ?>
                                 </h2>
                                 <?php if ( ! empty( $tour['count'] ) ) { ?>
-                                    <span><?php echo absint( $tour['count'] ) . esc_html__( ' Trips', 'travel-ultimate' ); ?></span>
+                                    <span><?php echo absint( $tour['count'] ) . esc_html__( ' Walks', 'travel-ultimate' ); ?></span>
                                 <?php } ?>
                             </header>
                         </div><!-- .tour-item-wrapper -->

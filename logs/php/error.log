@@ -148,3 +148,7 @@ Stack trace:
 [31-Oct-2019 10:26:14 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
 [31-Oct-2019 11:02:50 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
 [31-Oct-2019 11:26:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[17-Nov-2019 11:27:49 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[17-Nov-2019 11:57:58 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[17-Nov-2019 12:52:44 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
+[17-Nov-2019 13:00:47 UTC] PHP Warning:  Cannot modify header information - headers already sent in /app/public/wp-content/plugins/wp-travel/inc/lib/wp-session/class-wp-session.php on line 128
