@@ -114,7 +114,7 @@ if ( post_password_required() ) {
 					<!-- removed price indicator from right sidebar
                     php: wp_travel_trip_price( get_the_ID() );  -->
 					<div class="wp-travel-explore">
-							<a class="" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Explore', 'wp-travel' ); ?></a>
+							<a class="" href="<?php the_permalink(); ?>"><?php pl_e( esc_html( 'Explore', 'wp-travel' ) ); ?></a>
 					</div>
 				</div>
 			</div>

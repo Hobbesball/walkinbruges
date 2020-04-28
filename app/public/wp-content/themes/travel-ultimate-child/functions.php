@@ -3,6 +3,7 @@
 /** TOC
 *
 *- load stylesheets
+*- add string translations 
 *- change section order on front page
 *- enable header image on front page
 *- import google fonts
@@ -11,7 +12,8 @@
 *- customizing all trips page
 *- strip archives from archives page title
 *- front page about me section
-*- testimonial section 
+*- testimonial section
+
 **/
 ?>
 
@@ -21,6 +23,58 @@
              wp_enqueue_style( 'parent-style',    get_template_directory_uri().'/style.css' );
        }   
      ?>
+
+<?php
+
+/**
+ * Outputs localized string if polylang exists or  output's not translated one as a fallback
+ *
+ * @param $string
+ *
+ * @return  void
+ */
+function pl_e( $string = '' ) {
+    if ( function_exists( 'pll_e' ) ) {
+        pll_e( $string );
+    } else {
+        echo $string;
+    }
+}
+
+/**
+ * Returns translated string if polylang exists or  output's not translated one as a fallback
+ *
+ * @param $string
+ *
+ * @return string
+ */
+function pl__( $string = '' ) {
+    if ( function_exists( 'pll__' ) ) {
+        return pll__( $string );
+    }
+
+    return $string;
+}
+
+// these function prefixes can be either you are comfortable with.
+
+        //add polylang string translations
+        if ( function_exists( 'pll_register_string' ) ) {
+        add_action('init', function() {
+            pll_register_string('allwalks', 'All Walks');
+            pll_register_string('Getintouch', 'Get in Touch!');
+            pll_register_string('DiscoverOurTours', 'Discover our Walks');
+            pll_register_string('Aboutme', 'About me');
+            pll_register_string('checkusout', 'Check us out on:');
+            pll_register_string('Explore', 'Explore');
+            pll_register_string('readmore', 'Read More.');
+            pll_register_string('Trip Enquiry', 'Trip Enquiry');
+            
+          });
+        }
+
+        ?>
+
 
 <?php
  // changing the order of sections on the front page. function originally in /inc/options.php
@@ -168,7 +222,7 @@ function travel_ultimate_render_cta_section( $content_details = array() ) {
 
                             <?php if ( ! empty( $options['cta_btn_label'] ) ) : ?>
                                 <div class="cta-text-right">
-                                    <a href="<?php echo esc_url( $content['url'] ); ?>" class="btn"><?php echo esc_html( $options['cta_btn_label'] ); ?></a>
+                                    <a href="<?php echo esc_url( $content['url'] ); ?>" class="btn"><?php pl_e( esc_html( $options['cta_btn_label'] ) );?></a>
                                 </div><!-- .view-all -->
                             <?php endif; ?>
                         </div><!-- .entry-container -->
@@ -195,11 +249,11 @@ function travel_ultimate_render_package_section( $content_details = array() ) {
         <div class="wrapper">
             <div class="section-header align-center">
                 <?php if ( ! empty( $options['package_sub_title'] ) ) : ?>
-                    <span class="section-subtitle"><?php echo esc_html( $options['package_sub_title'] ); ?></span>
+                    <span class="section-subtitle"><?php pl_e( esc_html( $options['package_sub_title'] ) ); ?></span>
                 <?php endif; ?>
 
                 <?php if ( ! empty( $options['package_title'] ) ) : ?>
-                    <h2 class="section-title"><?php echo esc_html( $options['package_title'] ); ?></h2>
+                    <h2 class="section-title"><?php pl_e( esc_html( $options['package_title'] )); ?></h2>
                 <?php endif; ?>
             </div><!-- .section-header -->
 
@@ -310,13 +364,13 @@ function travel_ultimate_render_about_section( $content_details = array(), $tour
                     <div class="header-content-wrapper clear">
                         <div class="section-header">
                             <?php if ( ! empty( $content['title'] ) ) : ?>
-                                <h2 class="section-title"><?php echo esc_html( $content['title'] ); ?></h2>
+                                <h2 class="section-title"><?php pl_e( esc_html( $content['title'] )); ?></h2>
                             <?php endif; ?>
                         </div><!-- .section-header -->
 
                         <?php if ( ! empty( $content['excerpt'] ) ) : ?>
                             <div class="section-content">
-                                <p><?php echo wp_kses_post( $content['excerpt'] ); ?> <a href="/about/">Read More.</a></p>
+                                <p><?php echo wp_kses_post( $content['excerpt'] ); ?> <a href="/about/"><?php pl_e('Read More.'); ?></a></p>
                             </div><!-- .section-content -->
                         <?php endif; ?>
                     </div><!-- .header-content-wrapper -->
@@ -372,7 +426,7 @@ function travel_ultimate_render_testimonial_section( $content_details = array() 
             <div class="wrapper">
                 <div class="section-header">
                     <?php if ( ! empty( $options['testimonial_title'] ) ) : ?>
-                        <h2 class="section-title"><?php echo esc_html( $options['testimonial_title'] ); ?></h2>
+                        <h2 class="section-title"><?php pl_e( esc_html( $options['testimonial_title'] )); ?></h2>
                     <?php endif; ?>
                 </div><!-- .section-header -->
 
@@ -388,7 +442,7 @@ function travel_ultimate_render_testimonial_section( $content_details = array() 
                                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                                 <header class="entry-header">
                                     <!-- ?php if ( ! empty( $content['title'] ) ) : ?> -->
-                                        <h2 class="entry-title"><!--<a href="?php echo esc_url( $content['url'] ); ?>">?php echo esc_html( $content['title'] ); ?></a>--><a href="https://www.google.com" class="fa fa-facebook"></a></h2>
+                                        <h2 class="entry-title"><!--<a href="?php echo esc_url( $content['url'] ); ?>">?php echo esc_html( $content['title'] ); ?></a>--><a href="https://www.facebook.com/Walk-in-Bruges-111127243762999/" class="fa fa-facebook"></a></h2>
                                     <!-- ?php endif; ?> -->
                                 </header>
                             </div><!-- .image-title-wrapper -->

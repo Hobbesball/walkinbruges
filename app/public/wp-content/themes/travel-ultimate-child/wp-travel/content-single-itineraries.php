@@ -155,7 +155,7 @@ do_action( 'wp_travel_before_content_start');
 												<span class="wp-travel-booking-enquiry">
 													<span class="dashicons dashicons-editor-help"></span>
 													<span>
-														<?php esc_html_e( 'Trip Enquiry', 'travel-ultimate'); ?>
+														<?php pl_e (esc_html( 'Trip Enquiry', 'travel-ultimate')); ?>
 													</span>
 												</span>
 											</a>
