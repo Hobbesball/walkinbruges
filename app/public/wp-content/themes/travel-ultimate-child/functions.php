@@ -3,6 +3,7 @@
 /** TOC
 *
 *- load stylesheets
+*- enable excerpts for pages
 *- add string translations 
 *- change section order on front page
 *- enable header image on front page
@@ -25,6 +26,13 @@
      ?>
 
 <?php
+
+
+// enable excerpts for pages
+add_post_type_support( 'page', 'excerpt' );
+
+
+// add string translations
 
 /**
  * Outputs localized string if polylang exists or  output's not translated one as a fallback
